@@ -45,6 +45,11 @@ jobs:
           node test_live_v96.cjs
           node test_event_updates_v96.cjs
 
+      - name: Corregir referencia Java
+        run: |
+          sed -i '/private String activeScreen = "inicio";/d; /private final Runnable liveUpdate = ()->{/i\    private String activeScreen = "inicio";' app/src/main/java/com/lacoope/santboi/MainActivity.java
+          grep -n 'private String activeScreen' app/src/main/java/com/lacoope/santboi/MainActivity.java
+
       - name: Compilar APK Android
         run: gradle --no-daemon assembleDebug
 
