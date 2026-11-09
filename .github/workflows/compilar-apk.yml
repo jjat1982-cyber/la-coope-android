@@ -1,4 +1,4 @@
-name: Compilar LA COOPE APK
+name: Compilar LA COOPE V9.6 APK
 
 on:
   push:
@@ -17,8 +17,8 @@ jobs:
       - name: Descargar repositorio
         uses: actions/checkout@v4
 
-      - name: Extraer LA COOPE V9.4
-        run: unzip -o LA_COOPE_V94_09NOV_DESCARGA_DIRECTA.zip
+      - name: Extraer LA COOPE V9.6
+        run: unzip -o LA_COOPE_V9_6_EVENTOS.zip
 
       - name: Configurar Java 17
         uses: actions/setup-java@v4
@@ -37,12 +37,20 @@ jobs:
         with:
           gradle-version: '8.13'
 
+      - name: Pruebas del lector y eventos
+        run: |
+          node test_v92.cjs
+          node test_selector_v94.cjs
+          node test_direct_v95.cjs
+          node test_live_v96.cjs
+          node test_event_updates_v96.cjs
+
       - name: Compilar APK Android
         run: gradle --no-daemon assembleDebug
 
       - name: Generar archivo descargable
         uses: actions/upload-artifact@v4
         with:
-          name: LA_COOPE_V9_4_APK
+          name: LA_COOPE_V9_6_APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
